@@ -47,3 +47,17 @@ spec:
   - protocol: TCP
     port: 8080
     nodePort: 30100
+    
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: train-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: train-schedule
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 5
