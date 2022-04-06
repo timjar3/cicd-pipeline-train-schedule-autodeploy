@@ -15,7 +15,6 @@ pipeline {
                 sh "sudo docker build -t timjar3/train-schedule:${env.BUILD_NUMBER} ."
                 }
             }
-        }
         stage('Push Docker Image') {
           
             steps {
