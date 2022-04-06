@@ -26,14 +26,10 @@ pipeline {
         stage('Push Docker Image') {
           
             steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
-                        app.push("${env.BUILD_NUMBER}")
-                        app.push("latest")
-                    }
-                }
-            }
+              sh "sudo docker push timjar3/pubrepo1:${env.BUILD_NUMBER}" 
+             }
         }
+            
         stage('CanaryDeploy') {
             
             environment { 
