@@ -34,10 +34,10 @@ a {
 	#trainInfo table {
 		border-collapse:separate;
 		border-spacing:1px;
-		background:#CCC;
+		background:#7ddbd5;
 	}
 		#trainInfo table th {
-			background:#EEE;
+			background:rgb(240, 151, 151);
 			font-weight:600;
 			padding:10px 20px;
 			text-align:center;
