@@ -1,6 +1,12 @@
 pipeline {
     agent any
-   
+    
+   environment {
+		PROJECT_ID = 'dockerorc'
+        CLUSTER_NAME = 'gcpcluster-1'
+        LOCATION = 'us-central1-c'
+        CREDENTIALS_ID = 'k8_Cluster'		
+	}
     stages {
         stage('Build') {
             steps {
@@ -27,33 +33,19 @@ pipeline {
             environment { 
                 CANARY_REPLICAS = 1
             }
-            steps {
-                kubernetesDeploy(
-                    kubeconfigId: 'kubeconfig',
-                    configs: 'train-schedule-kube-canary.yml',
-                    enableConfigSubstitution: true
-                )
-            }
-        }
-        stage('DeployToProduction') {
-            
-            environment { 
-                CANARY_REPLICAS = 0
-            }
-            steps {
-                input 'Deploy to Production?'
-                milestone(1)
-                kubernetesDeploy(
-                    kubeconfigId: 'kubeconfig',
-                    configs: 'train-schedule-kube-canary.yml',
-                    enableConfigSubstitution: true
-                )
-                kubernetesDeploy(
-                    kubeconfigId: 'kubeconfig',
-                    configs: 'train-schedule-kube.yml',
-                    enableConfigSubstitution: true
-                )
-            }
-        }
-    }
+    
+               steps{
+			    echo "Deployment started ..."
+			    sh 'ls -ltr'
+			    sh 'pwd'
+			    sh "sed -i 's/tagversion/${env.BUILD_NUMBER}/g' train-schedule-kube-canary.yml"
+				sh "sed -i 's/tagversion/${env.BUILD_NUMBER}/g' train-schedule-kube.yml"
+			    echo "Start deployment of train-schedule-kube-canary.yml"
+			    step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'train-schedule-kube-canary.yml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
+				echo "Start deployment of train-schedule-kube.yml"
+				step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'train-schedule-kube.yml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
+			    echo "Deployment Finished ..."
+         }
+      }
+  }
 }
