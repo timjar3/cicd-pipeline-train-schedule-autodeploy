@@ -1,9 +1,6 @@
 pipeline {
     agent any
-    environment {
-        //be sure to replace "bhavukm" with your own Docker Hub username
-        DOCKER_IMAGE_NAME = "timjar3/train-schedule"
-    }
+   
     stages {
         stage('Build') {
             steps {
@@ -15,18 +12,14 @@ pipeline {
         stage('Build Docker Image') {
             
             steps {
-                script {
-                    app = docker.build(DOCKER_IMAGE_NAME)
-                    app.inside {
-                        sh 'echo Hello, World!'
-                    }
+                sh "sudo docker build -t timjar3/train-schedule:${env.BUILD_NUMBER} ."
                 }
             }
         }
         stage('Push Docker Image') {
           
             steps {
-              sh "sudo docker push timjar3/pubrepo1:${env.BUILD_NUMBER}" 
+              sh "sudo docker push timjar3/train-schedule:${env.BUILD_NUMBER}" 
              }
         }
             
