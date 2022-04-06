@@ -57,7 +57,7 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: train-schedule
+    name: train-schedule-deployment-canary
   minReplicas: 1
   maxReplicas: 5
   targetCPUUtilizationPercentage: 5
