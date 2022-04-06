@@ -1,6 +1,23 @@
 {
 	"trains": [
 		{
+			"name": "Palace on Wheels, India",
+			"stops": [
+				{
+					"station": "Bengaluru",
+					"status": "ON-TIME",
+					"arrival": "12:30pm",
+					"departure": "12:50pm"
+				},
+				{
+					"station": "Malleshwara",
+					"status": "ON-TIME",
+					"arrival": "1:00pm",
+					"departure": "1:10pm"
+				}
+			]
+		}
+		{
 			"name": "Hogwarts Express",
 			"stops": [
 				{
